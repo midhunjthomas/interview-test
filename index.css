@@ -147,6 +147,7 @@ body {
 }
 .action-area > *:not(:last-child) {
     margin-right: 20px;
+    margin-bottom: 1vh;
 }
 .hero p {
     font-size: 24px;
@@ -177,6 +178,26 @@ body {
     padding: 50px;
     gap: var(--spacing-m);
     max-width: 1000px;
+    display: grid;
+    /*
+        1. Update the masonry section to use a grid layout with 3 equal columns in desktop
+    */
+    grid-column-end: span 3
+}
+.masonry .brick{
+    grid-column:span 1;
+}
+.masonry .brick.double{
+    /*
+        2. The brick with the "double" class should use 2 columns in desktop
+    */
+    grid-column: span 2;
+}
+.masonry .brick.triple{
+    /*
+        3. The brick with the "triple" class should use 3 columns in desktop
+    */
+    grid-column: span 3;
 }
 
 .faq {
@@ -191,9 +212,24 @@ body {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    cursor: pointer;
 }
+.faq .question:hover{
+    background-color: #fafafa;
+}
+
 .faq .answer {
     padding: 0 8px;
+    overflow: hidden;
+}
+.faq .faq-set.faq-open .question + div{
+    display: block;
+    height:20vh;
+    transition: height .2s ease-in-out;
+}
+.faq .faq-set.faq-closed .question + div{
+    height: 0px;
+    transition: height .2s ease-in-out;
 }
 .faq .question::after {
     content: '';
@@ -207,14 +243,43 @@ body {
     transform: rotate(225deg);
     right: 12px;
     top: 36px;
+    transition: transform .2s ease-in-out;
+}
+.faq-set.faq-open .question::after{
+    transform: rotate(135deg);
 }
 .faq .answer p {
     margin-top: 0;
 }
 .banner {
     background-color: #eee;
-    padding: 16px;
+    padding: .2vh 2vw;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 96vw;
+    bottom: 0vh;
+    overflow: hidden;
+    visibility: hidden;
+    transition-property: all;
+	transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.3, 1);
+    z-index: 99999;
+}
+.banner.appear{
+    visibility: visible;
+    opacity: 1;
+    height: 75px;
+}
+.banner.close{
+    visibility: hidden;
+    opacity: 0;
+    height: 0px;
+}
+.banner p{
+    margin: .5vh 0vw;
 }
 .banner .con-button.blue {
     margin-left: 8px;
@@ -232,3 +297,20 @@ body {
         flex-direction: row;
     }
 }
+
+/*
+Please note, for below changes to work, index.html should have meta tag specifying viewport like below
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+*/
+@media only screen and (max-width: 600px) {
+    .brick {
+        grid-column:span 3 !important;
+    }
+    .banner{
+        flex-direction: column;
+    }
+    .hero .action-area a{
+        padding: .5vh 15vw;
+        margin-right: 0;
+    }
+  }
